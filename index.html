@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ID Application Kiosk Prototype</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="app-container">
+        <!-- Progress Bar -->
+        <div class="progress-bar" id="progressBar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <!-- Step Container -->
+        <div id="stepContainer">
+            <!-- Step 1: Welcome Screen -->
+            <div class="step active" id="step1">
+                <h1 data-i18n="welcomeTitle">Welcome to the ID Application Service</h1>
+                <p data-i18n="welcomeMsg">Please select your language and press start.</p>
+                
+                <div class="language-select">
+                    <label for="language" data-i18n="langLabel">Language:</label>
+                    <select id="language">
+                        <option value="en" selected>English</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
+
+                <h2 data-i18n="prereqTitle">Before you begin</h2>
+                <p data-i18n="prereqInstruction">Please ensure you have the following documents ready:</p>
+                <ul class="prereq-list">
+                    <li data-i18n="prereqID">A valid government-issued ID or proof of identity</li>
+                    <li data-i18n="prereqAddress">A proof of address (utility bill, lease, etc.)</li>
+                    <li data-i18n="prereqInfoAccuracy">All personal information accurately noted (Name, DOB)</li>
+                </ul>
+
+                <button class="primary-btn" onclick="startProcess()" data-i18n="btnStart">Start</button>
+            </div>
+
+            <!-- Step 2: Personal Info -->
+            <div class="step" id="step2">
+                <h2 data-i18n="personalInfoTitle">Personal Information</h2>
+                <div class="form-group">
+                    <label for="firstName" data-i18n="firstNameLabel">First Name:</label>
+                    <div class="input-with-voice">
+                      <input id="firstName" type="text"/>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName" data-i18n="lastNameLabel">Last Name:</label>
+                    <div class="input-with-voice">
+                      <input id="lastName" type="text"/>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dob" data-i18n="dobLabel">Date of Birth:</label>
+                    <div class="input-with-voice">
+                      <input id="dob" type="date"/>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="gender" data-i18n="genderLabel">Gender:</label>
+                    <div class="input-with-voice">
+                      <select id="gender">
+                          <option value="female" data-i18n="genderFemale">Female</option>
+                          <option value="male" data-i18n="genderMale">Male</option>
+                          <option value="other" data-i18n="genderOther">Other</option>
+                      </select>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="secondary-btn" onclick="goToPreviousStep()" data-i18n="btnBack">Back</button>
+                    <button class="primary-btn" onclick="goToNextStep()" data-i18n="btnNext">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Address Info -->
+            <div class="step" id="step3">
+                <h2 data-i18n="addressTitle">Address & Contact</h2>
+                <div class="form-group">
+                    <label for="address" data-i18n="addressLabel">Street Address:</label>
+                    <div class="input-with-voice">
+                      <input id="address" type="text"/>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="city" data-i18n="cityLabel">City:</label>
+                    <div class="input-with-voice">
+                      <input id="city" type="text"/>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="zip" data-i18n="zipLabel">Postal Code:</label>
+                    <div class="input-with-voice">
+                      <input id="zip" type="text"/>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" data-i18n="emailLabel">Email (optional):</label>
+                    <div class="input-with-voice">
+                      <input id="email" type="email"/>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone" data-i18n="phoneLabel">Phone (optional):</label>
+                    <div class="input-with-voice">
+                      <input id="phone" type="tel"/>
+                      <button type="button" class="voice-btn">🎤</button>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="secondary-btn" onclick="goToPreviousStep()" data-i18n="btnBack">Back</button>
+                    <button class="primary-btn" onclick="goToNextStep()" data-i18n="btnNext">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Document Verification -->
+            <div class="step" id="step4">
+                <h2 data-i18n="docVerifyTitle">Document Verification</h2>
+                <p data-i18n="docVerifyMsg">Please scan your existing ID card below or tap your NFC-enabled card on the reader.</p>
+                <div class="scan-area">
+                    <div class="placeholder-box" data-i18n="docScanPlaceholder">[ Scanner / NFC Area ]</div>
+                </div>
+
+                <button class="primary-btn" onclick="simulateDocVerification()" data-i18n="btnSimulateVerification">Simulate Verification</button>
+
+                <div class="nav-buttons">
+                    <button class="secondary-btn" onclick="goToPreviousStep()" data-i18n="btnBack">Back</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Biometric Capture (Photo) -->
+            <div class="step" id="step5">
+                <h2 data-i18n="biometricTitle">Biometric Capture</h2>
+                <p data-i18n="biometricMsg">Please look at the camera and press "Capture Photo".</p>
+                <div class="camera-preview">
+                    <div class="placeholder-box" data-i18n="cameraPlaceholder">[ Live Camera Feed ]</div>
+                </div>
+                <button class="primary-btn" onclick="goToNextStep()" data-i18n="btnCaptureContinue">Capture & Continue</button>
+
+                <div class="nav-buttons">
+                    <button class="secondary-btn" onclick="goToPreviousStep()" data-i18n="btnBack">Back</button>
+                </div>
+            </div>
+
+            <!-- Step 6: Review & Confirmation (Editable) -->
+            <div class="step" id="step6">
+                <h2 data-i18n="reviewTitle">Review Your Information</h2>
+                <p data-i18n="reviewMsg">Please confirm that all details are correct.</p>
+
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewFirstName" data-i18n="firstNameLabel">First Name:</label>
+                        <div class="input-with-voice">
+                          <input type="text" id="reviewFirstName" />
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewLastName" data-i18n="lastNameLabel">Last Name:</label>
+                        <div class="input-with-voice">
+                          <input type="text" id="reviewLastName" />
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewDob" data-i18n="dobLabel">Date of Birth:</label>
+                        <div class="input-with-voice">
+                          <input type="date" id="reviewDob" />
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewGender" data-i18n="genderLabel">Gender:</label>
+                        <div class="input-with-voice">
+                          <select id="reviewGender">
+                              <option value="female" data-i18n="genderFemale">Female</option>
+                              <option value="male" data-i18n="genderMale">Male</option>
+                              <option value="other" data-i18n="genderOther">Other</option>
+                          </select>
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewAddress" data-i18n="addressLabel">Street Address:</label>
+                        <div class="input-with-voice">
+                          <input type="text" id="reviewAddress" />
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewCity" data-i18n="cityLabel">City:</label>
+                        <div class="input-with-voice">
+                          <input type="text" id="reviewCity" />
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewZip" data-i18n="zipLabel">Postal Code:</label>
+                        <div class="input-with-voice">
+                          <input type="text" id="reviewZip" />
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewEmail" data-i18n="emailLabel">Email (optional):</label>
+                        <div class="input-with-voice">
+                          <input type="email" id="reviewEmail" />
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewPhone" data-i18n="phoneLabel">Phone (optional):</label>
+                        <div class="input-with-voice">
+                          <input type="tel" id="reviewPhone" />
+                          <button type="button" class="voice-btn">🎤</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="nav-buttons">
+                    <button class="secondary-btn" onclick="goToPreviousStep()" data-i18n="btnBack">Back</button>
+                    <button class="secondary-btn" onclick="saveReviewChanges()">Save Changes</button>
+                    <button class="primary-btn" onclick="goToNextStep()" data-i18n="btnConfirm">Confirm</button>
+                </div>
+            </div>
+
+            <!-- Step 7: Terms & Conditions -->
+            <div class="step" id="step7">
+                <h2 data-i18n="termsTitle">Terms & Conditions</h2>
+                <div class="terms-box">
+                    <p data-i18n="termsTextShort">By tapping "I Agree," you acknowledge the correctness of the data provided and consent to the government’s data handling policies.</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="secondary-btn" onclick="goToPreviousStep()" data-i18n="btnBack">Back</button>
+                    <button class="primary-btn" onclick="goToNextStep()" data-i18n="btnAgree">I Agree</button>
+                </div>
+            </div>
+
+            <!-- Step 8: Submission & Receipt -->
+            <div class="step" id="step8">
+                <h2 data-i18n="submissionTitle">Submission Complete</h2>
+                <p data-i18n="submissionMsg">Your application is now submitted. Please take your printed receipt.</p>
+                <div class="placeholder-box" data-i18n="receiptPlaceholder">[ Receipt Printing... ]</div>
+            </div>
+        </div>
+    </div>
+
+<script src="scriptGUI.js"></script>
+</body>
+</html>
